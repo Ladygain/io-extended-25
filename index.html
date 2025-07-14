@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google I/O Extended '25 in 의성 - Call for Papers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Uiseong Calm Tech -->
+    <!-- Application Structure Plan: 사용자의 정보 습득 흐름을 고려한 단일 페이지 애플리케이션(SPA) 구조를 채택했습니다. 사용자는 상단 네비게이션을 통해 원하는 섹션으로 즉시 이동하거나, 자연스럽게 스크롤하며 [행사 소개 → 발표자 모집 상세 → 전체 일정 → 문의] 순으로 정보를 파악할 수 있습니다. 이 구조는 여러 페이지를 이동하는 번거로움 없이 한 공간에서 모든 정보를 확인하고 발표 제안까지 완료할 수 있도록 설계되어 사용자 이탈을 최소화하고 목표(발표 제안) 달성률을 높이는 데 효과적입니다. 특히 '발표자 모집' 섹션을 중앙에 배치하여 사용자의 가장 큰 관심사에 집중하도록 유도했습니다. -->
+    <!-- Visualization & Content Choices: 
+        - 보고서 정보: CFP 마감일 -> 목표: 긴급성 부여 및 행동 유도 -> 시각화: JavaScript 기반 실시간 카운트다운 타이머 -> 상호작용: 없음 -> 정당성: 마감 기한을 시각적으로 강조하여 제안서 제출을 독려합니다. -> 라이브러리: Vanilla JS.
+        - 보고서 정보: 발표자 선정 절차 및 일정 -> 목표: 복잡한 일정 정보의 명확한 전달 -> 시각화: Chart.js를 활용한 가로 막대(Gantt) 차트 -> 상호작용: 없음 (정적 정보 전달) -> 정당성: 텍스트로 나열된 일정을 시각적 차트로 표현하여 사용자가 각 단계의 기간과 순서를 직관적으로 이해할 수 있도록 돕습니다. -> 라이브러리: Chart.js.
+        - 보고서 정보: 발표자 혜택 및 모집 주제 -> 목표: 정보의 매력적인 그룹화 및 전달 -> 시각화: 아이콘과 카드를 활용한 구조화된 HTML/CSS 그리드 및 태그 형식 -> 상호작용: 없음 -> 정당성: 아이콘과 카드는 혜택 정보를, 태그는 주제 정보를 시각적으로 구분하여 가독성을 높이고 매력적으로 보이게 합니다. -> 라이브러리: Tailwind CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFCFB;
+            color: #333;
+        }
+        .hero-bg {
+            background-color: #EAE8E3;
+            background-image:
+                radial-gradient(circle at 15% 50%, #D1D5DB 0%, transparent 20%),
+                radial-gradient(circle at 85% 30%, #A3B8B7 0%, transparent 25%),
+                radial-gradient(circle at 50% 80%, #D1D5DB 0%, transparent 20%);
+            background-size: 100% 100%;
+        }
+        .accent-bg { background-color: #89B0AE; }
+        .accent-text { color: #89B0AE; }
+        .accent-border { border-color: #89B0AE; }
+        .accent-bg-hover:hover { background-color: #709a98; }
+        .nav-scrolled {
+            background-color: rgba(253, 252, 251, 0.8);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+            max-height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#home" class="font-bold text-xl">I/O Extended '25 Uiseong</a>
+                </div>
+                <div class="hidden md:block">
+                    <nav class="ml-10 flex items-baseline space-x-4">
+                        <a href="#about" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200 transition-colors">행사 소개</a>
+                        <a href="#cfp" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200 transition-colors">발표자 모집</a>
+                        <a href="#schedule" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200 transition-colors">일정</a>
+                        <a href="#contact" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200 transition-colors">장소 및 문의</a>
+                    </nav>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span class="sr-only">메뉴 열기</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white">
+                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200">행사 소개</a>
+                <a href="#cfp" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200">발표자 모집</a>
+                <a href="#schedule" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200">일정</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200">장소 및 문의</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-bg pt-24 pb-16 sm:pt-32 sm:pb-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900">
+                    <span class="block">Google I/O Extended '25 in 의성</span>
+                    <span class="block accent-text mt-2">발표자를 모집합니다</span>
+                </h1>
+                <p class="mt-6 max-w-2xl mx-auto text-lg sm:text-xl text-gray-600">
+                    당신의 지식과 경험을 공유하고, 경북 의성의 기술 생태계에 새로운 영감을 불어넣어 주세요.
+                </p>
+                <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="#cfp" class="w-full sm:w-auto inline-block bg-gray-800 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:bg-black transition-all duration-300 transform hover:scale-105">
+                        지금 발표 제안하기
+                    </a>
+                </div>
+                <div class="mt-12">
+                    <p class="text-sm font-medium text-gray-600 mb-2">발표 제안 마감까지</p>
+                    <div id="countdown" class="flex justify-center space-x-4 text-gray-800">
+                        <div>
+                            <span id="days" class="text-3xl sm:text-4xl font-bold">00</span>
+                            <span class="block text-xs">일</span>
+                        </div>
+                        <div>
+                            <span id="hours" class="text-3xl sm:text-4xl font-bold">00</span>
+                            <span class="block text-xs">시간</span>
+                        </div>
+                        <div>
+                            <span id="minutes" class="text-3xl sm:text-4xl font-bold">00</span>
+                            <span class="block text-xs">분</span>
+                        </div>
+                        <div>
+                            <span id="seconds" class="text-3xl sm:text-4xl font-bold">00</span>
+                            <span class="block text-xs">초</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">의성에서 만나는 기술의 미래</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                        Google I/O Extended Uiseong은 최신 기술 동향을 공유하고 지역의 개발자 커뮤니티와 함께 성장하기 위해 마련된 특별한 행사입니다. 아름다운 자연 속에서 새로운 아이디어를 얻고, 동료들과 깊이 있는 네트워킹을 경험하세요.
+                    </p>
+                </div>
+                <div class="mt-16 grid gap-8 md:grid-cols-3">
+                    <div class="p-8 bg-gray-50 rounded-2xl">
+                        <div class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 text-blue-600">
+                            <span class="text-2xl">🤝</span>
+                        </div>
+                        <h3 class="mt-6 text-xl font-bold text-gray-900">네트워킹</h3>
+                        <p class="mt-2 text-base text-gray-600">기술 전문가, 지역 인재, 그리고 구글 직원들과 교류하며 소중한 인연을 만듭니다.</p>
+                    </div>
+                    <div class="p-8 bg-gray-50 rounded-2xl">
+                         <div class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-600">
+                            <span class="text-2xl">💡</span>
+                        </div>
+                        <h3 class="mt-6 text-xl font-bold text-gray-900">교육 및 성장</h3>
+                        <p class="mt-2 text-base text-gray-600">실질적인 핸즈온과 깊이 있는 세션을 통해 기술 역량을 한 단계 성장시킵니다.</p>
+                    </div>
+                    <div class="p-8 bg-gray-50 rounded-2xl">
+                         <div class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 text-yellow-600">
+                            <span class="text-2xl">🚀</span>
+                        </div>
+                        <h3 class="mt-6 text-xl font-bold text-gray-900">지역 혁신</h3>
+                        <p class="mt-2 text-base text-gray-600">의성군의 성장 동력을 발굴하고, 기술로 지역 사회에 기여할 기회를 모색합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call for Papers (CFP) Section -->
+        <section id="cfp" class="py-16 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">당신의 이야기를 들려주세요</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                        아래 분야에 대한 전문성과 경험을 가진 발표자 여러분을 기다립니다. 당신의 인사이트를 공유하고 커뮤니티와 함께 성장하는 특별한 경험을 만들어보세요.
+                    </p>
+                </div>
+                
+                <div class="mt-16 grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900">발표자 혜택</h3>
+                        <div class="mt-6 space-y-6">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full accent-bg text-white">✓</div>
+                                <p class="ml-4 text-base text-gray-600"><strong class="font-semibold text-gray-900">강사비 지급:</strong> 선정된 세션 발표자에게는 소정의 강사비(50만원)를 지급합니다.</p>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full accent-bg text-white">✓</div>
+                                <p class="ml-4 text-base text-gray-600"><strong class="font-semibold text-gray-900">네트워킹 기회:</strong> 구글 직원, IT 전문가, 지역 인재들과의 깊이 있는 네트워킹 파티에 초대됩니다.</p>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full accent-bg text-white">✓</div>
+                                <p class="ml-4 text-base text-gray-600"><strong class="font-semibold text-gray-900">홍보 지원:</strong> GDG 커뮤니티 및 관련 채널을 통해 발표자와 세션을 적극적으로 홍보해 드립니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900">모집 분야</h3>
+                        <div class="mt-6 flex flex-wrap gap-3">
+                            <span class="px-4 py-2 rounded-full bg-blue-100 text-blue-800 font-medium">Google I/O 2025 Recap</span>
+                            <span class="px-4 py-2 rounded-full bg-green-100 text-green-800 font-medium">Gemini 프로젝트</span>
+                            <span class="px-4 py-2 rounded-full bg-yellow-100 text-yellow-800 font-medium">AI/ML 활용 사례</span>
+                            <span class="px-4 py-2 rounded-full bg-purple-100 text-purple-800 font-medium">커리어 & 소프트스킬</span>
+                            <span class="px-4 py-2 rounded-full bg-indigo-100 text-indigo-800 font-medium">US 해커톤 우수작</span>
+                            <span class="px-4 py-2 rounded-full bg-pink-100 text-pink-800 font-medium">클라우드 기술</span>
+                            <span class="px-4 py-2 rounded-full bg-red-100 text-red-800 font-medium">Google ADK Deep Dive</span>
+                            <span class="px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium">기타 산업 트렌드</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-20 p-8 bg-gray-50 rounded-2xl border border-gray-200 text-center">
+                    <h3 class="text-2xl font-bold text-gray-900">지원 방법</h3>
+                    <p class="mt-3 text-base text-gray-600">
+                        CFP 기간은 <strong class="accent-text">7월 14일(월)부터 8월 2일(토)까지</strong>입니다. 아래 버튼을 눌러 지금 바로 지원하세요!
+                    </p>
+                    <div class="mt-6">
+                        <a href="#" target="_blank" class="w-full sm:w-auto inline-block bg-gray-800 text-white font-bold text-lg px-10 py-4 rounded-lg shadow-lg hover:bg-black transition-all duration-300 transform hover:scale-105">
+                            발표 제안서 제출하기 (Google Form)
+                        </a>
+                    </div>
+                     <p class="mt-4 text-sm text-gray-500">* 기본 정보는 구글폼으로, 발표 자료는 추후 메일로 안내 및 수합 예정입니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section id="schedule" class="py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">주요 일정</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                        발표자 모집부터 행사일까지의 전체적인 흐름을 확인하세요.
+                    </p>
+                </div>
+                
+                <div class="mt-16">
+                    <h3 class="text-2xl font-bold text-center text-gray-900">발표자 선정 절차</h3>
+                    <div class="chart-container mt-8">
+                        <canvas id="cfpTimelineChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="mt-20">
+                    <h3 class="text-2xl font-bold text-center text-gray-900">행사 타임라인 (8/17 ~ 8/19)</h3>
+                    <div class="mt-12 grid gap-10 md:grid-cols-3">
+                        <div class="p-6 bg-gray-50 rounded-2xl">
+                            <p class="text-sm font-semibold accent-text">DAY 0 | 8/17 (일)</p>
+                            <h4 class="mt-2 text-xl font-bold text-gray-900">의성에 머물다: 네트워킹 파티</h4>
+                            <p class="mt-3 text-base text-gray-600">발표자와 주요 관계자들이 미리 모여 교류하는 시간입니다. AI 요리, 컬링 등 특별한 액티비티가 준비됩니다.</p>
+                        </div>
+                        <div class="p-6 bg-gray-50 rounded-2xl border-2 accent-border">
+                             <p class="text-sm font-semibold accent-text">DAY 1 | 8/18 (월)</p>
+                            <h4 class="mt-2 text-xl font-bold text-gray-900">Google AI를 만나다: 본 컨퍼런스</h4>
+                            <p class="mt-3 text-base text-gray-600">키노트를 시작으로 발표 세션(A트랙)과 핸즈온(B트랙)이 동시에 진행되며, 네트워킹 시간도 마련됩니다.</p>
+                        </div>
+                        <div class="p-6 bg-gray-50 rounded-2xl">
+                             <p class="text-sm font-semibold accent-text">DAY 2 | 8/19 (화)</p>
+                            <h4 class="mt-2 text-xl font-bold text-gray-900">의성을 발견하다: 로컬 스토리</h4>
+                            <p class="mt-3 text-base text-gray-600">의성 지역의 스타트업 및 IT 생태계 이야기를 듣고, 기술과 지역의 상생 가능성을 모색합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">행사 장소</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                        자연과 기술이 어우러진 특별한 공간에서 여러분을 맞이합니다.
+                    </p>
+                </div>
+                <div class="mt-16 grid md:grid-cols-2 gap-8">
+                     <div class="rounded-lg overflow-hidden">
+                        <img src="https://lh3.googleusercontent.com/drive-viewer/AKGpihbz6eKq81xM4T7G5U300L_i1F6z5K_jG4b9s0n-o6W02933_3p5-5654zN5i5n7u_E7v-76f87Cq9x7U15Fk1U-v4=s1600" alt="의성 청출어람 건물 외관" class="w-full h-64 object-cover">
+                        <div class="p-6 bg-gray-50">
+                            <h3 class="font-bold text-lg">메인 컨퍼런스: 의성 청출어람</h3>
+                            <p class="text-gray-600 mt-2">최신 시설을 갖춘 컨퍼런스 장소입니다.</p>
+                            <a href="https://naver.me/GgWCnWC3" target="_blank" class="accent-text font-semibold mt-4 inline-block">지도 보기 &rarr;</a>
+                        </div>
+                    </div>
+                    <div class="rounded-lg overflow-hidden">
+                        <img src="https://lh3.googleusercontent.com/drive-viewer/AKGpihbvjQWJ5_e5t2yJ98lX8x1b9P36uD69QyJd552V-G4j9m7G2k5Yg_7y79xN40o9n6f9u424tU0v6O6r22yJ9A23d7t=s1600" alt="논밭에 건물과 주변 풍경" class="w-full h-64 object-cover">
+                         <div class="p-6 bg-gray-50">
+                            <h3 class="font-bold text-lg">네트워킹 파티: 논밭에</h3>
+                            <p class="text-gray-600 mt-2">의성의 아름다운 경치를 감상할 수 있는 공간입니다.</p>
+                             <a href="https://naver.me/FW6zVOs9" target="_blank" class="accent-text font-semibold mt-4 inline-block">지도 보기 &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-16 text-center">
+                     <h3 class="text-2xl font-bold text-gray-900">문의하기</h3>
+                     <p class="mt-4 text-lg text-gray-600">행사 관련 문의사항은 아래 이메일로 연락주세요.</p>
+                     <a href="mailto:contact@example.com" class="mt-4 inline-block font-bold text-xl accent-text">contact@example.com</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
+            <p class="font-bold">주최/주관: 메이드인피플, GDG 대구</p>
+            <p class="mt-4 text-sm text-gray-400">&copy; 2025 Google I/O Extended Uiseong. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu on link click
+            const mobileNavLinks = mobileMenu.querySelectorAll('a');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('nav-scrolled');
+                } else {
+                    navbar.classList.remove('nav-scrolled');
+                }
+            });
+
+            // Countdown Timer
+            const countdownElement = document.getElementById('countdown');
+            if (countdownElement) {
+                const countDownDate = new Date("Aug 2, 2025 23:59:59").getTime();
+
+                const updateCountdown = () => {
+                    const now = new Date().getTime();
+                    const distance = countDownDate - now;
+
+                    if (distance < 0) {
+                        countdownElement.innerHTML = "<div class='text-2xl font-bold text-red-500'>발표자 모집이 마감되었습니다.</div>";
+                        clearInterval(interval);
+                        return;
+                    }
+
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    document.getElementById('days').innerText = String(days).padStart(2, '0');
+                    document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                    document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                    document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+                };
+                
+                const interval = setInterval(updateCountdown, 1000);
+                updateCountdown();
+            }
+
+            // CFP Timeline Chart
+            const ctx = document.getElementById('cfpTimelineChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['발표자 모집 (CFP)', '심사 및 선정', '발표자 리허설', 'I/O Extended 행사'],
+                        datasets: [{
+                            label: '일정',
+                            data: [
+                                {x: [new Date('2025-07-14'), new Date('2025-08-02')], y: '발표자 모집 (CFP)'},
+                                {x: [new Date('2025-08-03'), new Date('2025-08-05')], y: '심사 및 선정'},
+                                {x: [new Date('2025-08-06'), new Date('2025-08-06')], y: '발표자 리허설'},
+                                {x: [new Date('2025-08-18'), new Date('2025-08-19')], y: 'I/O Extended 행사'},
+                            ],
+                            backgroundColor: [
+                                'rgba(137, 176, 174, 0.7)',
+                                'rgba(255, 159, 64, 0.7)',
+                                'rgba(255, 205, 86, 0.7)',
+                                'rgba(75, 192, 192, 0.7)',
+                            ],
+                            borderColor: [
+                                'rgba(137, 176, 174, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(255, 205, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                            ],
+                            borderWidth: 1,
+                            barPercentage: 0.5,
+                            categoryPercentage: 0.8,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'day',
+                                    tooltipFormat: 'yyyy.MM.dd',
+                                    displayFormats: {
+                                        day: 'MM/dd'
+                                    }
+                                },
+                                min: '2025-07-10',
+                                max: '2025-08-25',
+                                title: {
+                                    display: true,
+                                    text: '날짜'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const start = new Date(context.raw.x[0]).toLocaleDateString('ko-KR');
+                                        const end = new Date(context.raw.x[1]).toLocaleDateString('ko-KR');
+                                        return `${context.dataset.label}: ${start} - ${end}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
