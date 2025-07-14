@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
     <!-- Chosen Palette: Uiseong Calm Tech -->
     <!-- Application Structure Plan: 사용자의 정보 습득 흐름을 고려한 단일 페이지 애플리케이션(SPA) 구조를 채택했습니다. 사용자는 상단 네비게이션을 통해 원하는 섹션으로 즉시 이동하거나, 자연스럽게 스크롤하며 [행사 소개 → 발표자 모집 상세 → 전체 일정 → 문의] 순으로 정보를 파악할 수 있습니다. 이 구조는 여러 페이지를 이동하는 번거로움 없이 한 공간에서 모든 정보를 확인하고 발표 제안까지 완료할 수 있도록 설계되어 사용자 이탈을 최소화하고 목표(발표 제안) 달성률을 높이는 데 효과적입니다. 특히 '발표자 모집' 섹션을 중앙에 배치하여 사용자의 가장 큰 관심사에 집중하도록 유도했습니다. -->
     <!-- Visualization & Content Choices: 
@@ -18,23 +20,62 @@
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
+        :root {
+            /* Google I/O Extended Color Palette */
+            --primary-blue: #1a73e8;
+            --primary-green: #34a853;
+            --primary-purple: #9334e6;
+            --primary-orange: #ff6d00;
+            --primary-red: #ea4335;
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+            --tech-blue: #0f172a;
+            --tech-light-blue: #3b82f6;
+            --tech-green: #10b981;
+            --tech-purple: #8b5cf6;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-dark: #0f172a;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+        }
+        
         body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #FDFCFB;
-            color: #333;
+            font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            word-break: keep-all;
         }
+        
         .hero-bg {
-            background-color: #EAE8E3;
-            background-image:
-                radial-gradient(circle at 15% 50%, #D1D5DB 0%, transparent 20%),
-                radial-gradient(circle at 85% 30%, #A3B8B7 0%, transparent 25%),
-                radial-gradient(circle at 50% 80%, #D1D5DB 0%, transparent 20%);
-            background-size: 100% 100%;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            position: relative;
+            overflow: hidden;
         }
-        .accent-bg { background-color: #89B0AE; }
-        .accent-text { color: #89B0AE; }
-        .accent-border { border-color: #89B0AE; }
-        .accent-bg-hover:hover { background-color: #709a98; }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Event Page Banner/IOE25_Bevy_EventPageBanner.png') center/cover;
+            opacity: 0.1;
+            z-index: 1;
+        }
+        
+        
+        .accent-bg { background: linear-gradient(135deg, var(--primary-blue), var(--primary-green)); }
+        .accent-text { color: var(--primary-blue); }
+        .accent-border { border-color: var(--primary-blue); }
+        .accent-bg-hover:hover { background: linear-gradient(135deg, var(--primary-green), var(--primary-blue)); }
         .nav-scrolled {
             background-color: rgba(253, 252, 251, 0.8);
             backdrop-filter: blur(8px);
@@ -54,79 +95,1257 @@
                 height: 300px;
             }
         }
+        
+        /* Navigation Classes */
+        .nav-header { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            z-index: 50; 
+            transition: all 0.3s; 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+        }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
+        .nav-logo { flex-shrink: 0; display: flex; align-items: center; gap: 0.5rem; }
+        .logo-link { 
+            font-weight: 700; 
+            font-size: 1.25rem; 
+            line-height: 1.75rem; 
+            color: var(--tech-blue); 
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logo-icon {
+            width: 2rem;
+            height: 2rem;
+            background: url('./assets/Brand assets/Logos - Core & Editable/GoogleIO_Extended_Black.png') center/contain no-repeat;
+        }
+        .nav-desktop { display: none; }
+        .nav-menu { margin-left: 2.5rem; display: flex; align-items: baseline; gap: 0.5rem; }
+        .nav-link { 
+            padding: 0.5rem 1rem; 
+            border-radius: 0.5rem; 
+            font-size: 0.875rem; 
+            font-weight: 500; 
+            color: var(--text-secondary); 
+            transition: all 0.2s; 
+            text-decoration: none;
+            position: relative;
+        }
+        .nav-link:hover { 
+            color: var(--primary-blue); 
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 52, 230, 0.1));
+        }
+        .nav-mobile { display: block; }
+        .mobile-menu-btn { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 0.5rem; 
+            border-radius: 0.5rem; 
+            color: var(--text-secondary); 
+            background: none; 
+            border: none; 
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mobile-menu-btn:hover { 
+            color: var(--primary-blue); 
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .mobile-menu-btn:focus { outline: 2px solid transparent; outline-offset: 2px; }
+        .mobile-menu-icon { height: 1.5rem; width: 1.5rem; }
+        .mobile-menu { display: none; }
+        .mobile-menu-inner { 
+            padding: 1rem; 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 0.5rem;
+            margin: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .mobile-menu-inner > * + * { margin-top: 0.5rem; }
+        .mobile-nav-link { 
+            display: block; 
+            padding: 0.75rem 1rem; 
+            border-radius: 0.5rem; 
+            font-size: 1rem; 
+            font-weight: 500; 
+            color: var(--text-secondary); 
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .mobile-nav-link:hover { 
+            color: var(--primary-blue); 
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 52, 230, 0.1));
+        }
+        
+        /* Hero Section Classes */
+        .hero-section { 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+            padding: 8rem 0 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Chapter Banners/IOE25_Bevy_ChapterBanner_BG.png') center/cover;
+            opacity: 0.08;
+            z-index: 1;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Event Page Banner/IOE25_Bevy_EventPageBanner.png') center/cover;
+            opacity: 0.1;
+            z-index: 1;
+        }
+        
+        .hero-container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 1rem; 
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title { 
+            font-size: 2.1rem; 
+            line-height: 1.1; 
+            font-weight: 900; 
+            letter-spacing: -0.04em; 
+            color: var(--text-primary);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+            text-align: center;
+            word-break: keep-all;
+        }
+        
+        .hero-title-main { display: block; }
+        .hero-title-sub { 
+            display: block; 
+            color: var(--primary-blue);
+            margin-top: 0.5rem;
+            font-size: 0.9em;
+        }
+        
+        .hero-description { 
+            margin-top: 2rem; 
+            max-width: 44rem; 
+            margin-left: auto; 
+            margin-right: auto; 
+            font-size: 1.125rem; 
+            line-height: 1.8; 
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            text-align: center;
+            word-break: keep-all;
+        }
+        
+        .hero-cta { 
+            margin-top: 3rem; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
+        }
+        
+        .cta-button { 
+            width: 70%; 
+            display: inline-block; 
+            background: #fbbf24;
+            color: white;
+            font-weight: 700; 
+            font-size: 1rem; 
+            padding: 1.25rem 2.5rem; 
+            border-radius: 0.75rem;
+            transform: scale(1); 
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .cta-button:hover { 
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 0 20px 40px rgba(251, 191, 36, 0.5);
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 15px 35px rgba(251, 191, 36, 0.4); }
+            50% { box-shadow: 0 15px 35px rgba(251, 191, 36, 0.6), 0 0 0 10px rgba(251, 191, 36, 0.1); }
+            100% { box-shadow: 0 15px 35px rgba(251, 191, 36, 0.4); }
+        }
+        
+        .countdown-section { 
+            margin-top: 2rem;
+            padding: 1rem;
+        }
+        
+        .countdown-header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .countdown-label { 
+            font-size: 1rem; 
+            font-weight: 500; 
+            color: var(--text-primary); 
+            margin: 0;
+        }
+        
+        .countdown-timer { 
+            display: flex; 
+            justify-content: center; 
+            gap: 1rem; 
+            color: var(--text-primary);
+        }
+        
+        .countdown-item {
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            min-width: 80px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .countdown-number { 
+            font-size: 1.5rem; 
+            line-height: 1; 
+            font-weight: 700;
+            display: block;
+        }
+        
+        .countdown-unit { 
+            display: block; 
+            font-size: 0.75rem; 
+            line-height: 1rem;
+            margin-top: 0.25rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (min-width: 640px) {
+            .nav-container { padding: 0 1.5rem; }
+            .mobile-menu-inner { padding: 1rem; }
+            .hero-section { padding: 10rem 0 8rem; }
+            .hero-container { padding: 0 1.5rem; }
+            .hero-title { font-size: 3.5rem; }
+            .hero-description { font-size: 1.375rem; }
+            .hero-cta { flex-direction: row; }
+            .cta-button { width: auto; }
+            .countdown-timer { gap: 2rem; }
+            .countdown-item { min-width: 100px; padding: 1rem; }
+            .countdown-number { font-size: 1rem; }
+            .about-section { padding: 8rem 0; }
+            .about-container { padding: 0 1.5rem; }
+            .about-title { font-size: 3rem; }
+            .about-description { font-size: 1.375rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .nav-desktop { display: block; }
+            .nav-mobile { display: none; }
+            .mobile-menu { display: none !important; }
+            .hero-title { font-size: 4rem; }
+            .about-features { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem; }
+        }
+        
+        @media (min-width: 1024px) {
+            .nav-container { padding: 0 2rem; }
+            .hero-container { padding: 0 2rem; }
+            .hero-title { font-size: 4.5rem; }
+            .about-container { padding: 0 2rem; }
+            .about-features { gap: 3rem; }
+            .feature-card { padding: 3rem; }
+        }
+        
+        /* About Section Classes */
+        .about-section { 
+            padding: 6rem 0; 
+            background: white;
+            position: relative;
+        }
+        
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Chapter Banners/IOE25_Bevy_ChapterBanner_RY.png') center/cover;
+            opacity: 0.03;
+            z-index: 1;
+        }
+        
+        .about-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; position: relative; z-index: 2; }
+        .about-header {text-align: center;
+            margin-bottom: 4rem; }
+        
+        .about-title { 
+            font-size: 2rem; 
+            line-height: 1.1; 
+            font-weight: 700; 
+            letter-spacing: -0.025em; 
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .about-description { 
+            max-width: 48rem; 
+            padding-top: 1rem;
+            margin: 0 auto; 
+            font-size: 0.7rem; 
+            line-height: 1.75rem; 
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+    
+        
+        .about-features { 
+            display: grid; 
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        
+        .feature-card { 
+            padding: 2rem; 
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:nth-child(1)::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Chapter Banners/IOE25_Bevy_ChapterBanner_BG.png') center/cover;
+            opacity: 0.04;
+            z-index: 1;
+        }
+        
+        .feature-card:nth-child(2)::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Chapter Banners/IOE25_Bevy_ChapterBanner_GY.png') center/cover;
+            opacity: 0.04;
+            z-index: 1;
+        }
+        
+        .feature-card:nth-child(3)::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Chapter Banners/IOE25_Bevy_ChapterBanner_RY.png') center/cover;
+            opacity: 0.04;
+            z-index: 1;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+        }
+        
+        .feature-card:hover { 
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .feature-icon { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            height: 4rem; 
+            width: 4rem; 
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-icon-blue { 
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 52, 230, 0.1));
+            color: var(--primary-blue);
+        }
+        
+        .feature-icon-green { 
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+            color: var(--tech-green);
+        }
+        
+        .feature-icon-yellow { 
+            background: linear-gradient(135deg, rgba(255, 109, 0, 0.1), rgba(251, 191, 36, 0.1));
+            color: var(--primary-orange);
+        }
+        
+        .feature-emoji { font-size: 1.75rem; line-height: 1; }
+        
+        .feature-title { 
+            font-size: 1.25rem; 
+            line-height: 1.3; 
+            font-weight: 700; 
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .feature-description { 
+            font-size: 1rem; 
+            line-height: 1.6; 
+            color: var(--text-secondary);
+            font-weight: 300;
+            position: relative;
+            z-index: 2;
+        }
+        
+        @media (min-width: 768px) {
+            .about-features { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        
+        @media (min-width: 1024px) {
+            .cfp-container, .about-container, .contact-container { padding: 0 2rem; }
+        }
+        
+        /* CFP Section Classes */
+        .cfp-section {
+            padding: 6rem 0;
+            background: white;
+            position: relative;
+        }
+        
+        .cfp-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Chapter Banners/IOE25_Bevy_ChapterBanner_BG.png') center/cover;
+            opacity: 0.03;
+            z-index: 1;
+        }
+        
+        .cfp-container, .about-container, .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            font-size: 1.7rem; 
+            line-height: 1.3; 
+            font-weight: 700; 
+            letter-spacing: -0.03em; 
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            word-break: keep-all;
+        }
+        
+        .section-description {
+            max-width: 42rem; 
+            margin: 0 auto; 
+            font-size: 1rem; 
+            line-height: 1.8; 
+            color: var(--text-secondary);
+            font-weight: 400;
+            text-align: center;
+            word-break: keep-all;
+            letter-spacing: -0.01em;
+        }
+
+        
+        .cfp-content {
+            display: grid;
+            gap: 3rem;
+            align-items: start;
+        }
+        
+        .benefits-section, .topics-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .benefits-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/place1.jpg') center/cover;
+            opacity: 0.03;
+            z-index: 1;
+        }
+        
+        .topics-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/place2.jpg') center/cover;
+            opacity: 0.03;
+            z-index: 1;
+        }
+        
+        .benefits-title, .topics-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .benefits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .benefit-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .benefit-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin: 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .benefit-text strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .topics-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .topic-tag {
+            padding: 0.75rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: default;
+            border: 1px solid transparent;
+        }
+        
+        .topic-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .topic-blue { background: rgba(59, 130, 246, 0.1); color: var(--primary-blue); border-color: rgba(59, 130, 246, 0.2); }
+        .topic-green { background: rgba(16, 185, 129, 0.1); color: var(--tech-green); border-color: rgba(16, 185, 129, 0.2); }
+        .topic-yellow { background: rgba(255, 109, 0, 0.1); color: var(--primary-orange); border-color: rgba(255, 109, 0, 0.2); }
+        .topic-purple { background: rgba(147, 52, 230, 0.1); color: var(--primary-purple); border-color: rgba(147, 52, 230, 0.2); }
+        .topic-indigo { background: rgba(139, 92, 246, 0.1); color: var(--tech-purple); border-color: rgba(139, 92, 246, 0.2); }
+        .topic-pink { background: rgba(236, 72, 153, 0.1); color: #ec4899; border-color: rgba(236, 72, 153, 0.2); }
+        .topic-red { background: rgba(234, 67, 53, 0.1); color: var(--primary-red); border-color: rgba(234, 67, 53, 0.2); }
+        .topic-gray { background: rgba(107, 114, 128, 0.1); color: var(--text-secondary); border-color: rgba(107, 114, 128, 0.2); }
+        
+        .application-section {
+            margin-top: 4rem;
+            background: white;
+            border-radius: 1rem;
+            padding: 3rem;
+            text-align: center;
+            color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+        
+        .application-header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .application-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Chapter Banners/IOE25_Bevy_ChapterBanner_GY.png') center/cover;
+            opacity: 0.05;
+            z-index: 1;
+        }
+        
+        .application-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+            color: var(--text-primary);
+        }
+        
+        .application-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+            color: var(--text-secondary);
+        }
+        
+        .application-button-container {
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .application-button {
+            display: inline-block;
+            background: white;
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.125rem;
+            padding: 1rem 2.5rem;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .application-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .application-button:hover::before {
+            left: 100%;
+        }
+        
+        .application-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .application-note {
+            font-size: 0.875rem;
+            opacity: 0.8;
+            position: relative;
+            z-index: 2;
+        }
+        
+        @media (min-width: 640px) {
+            .cfp-section { padding: 8rem 0; }
+            .cfp-container, .about-container, .contact-container { padding: 0 1.5rem; }
+            .section-title { font-size: 2.75rem; }
+            .section-description { font-size: 1.25rem; max-width: 44rem; }
+            .application-section { padding: 3.5rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .cfp-content { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; }
+            .section-title { font-size: 3rem; }
+            .section-description { font-size: 1.375rem; max-width: 48rem; }
+        }
+        
+        @media (min-width: 1024px) {
+            .cfp-content { gap: 4rem; }
+            .benefits-section, .topics-section { padding: 3rem; }
+            .section-title { font-size: 3.5rem; }
+            .section-description { font-size: 1.5rem; max-width: 52rem; }
+        }
+        
+        /* Contact Section Classes */
+        .contact-section {
+            padding: 6rem 0;
+            background: white;
+            position: relative;
+        }
+        
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Event Page Thumbnails/IOE25_BevyThumbnail.png') center/cover;
+            opacity: 0.02;
+            z-index: 1;
+        }
+        
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .contact-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .contact-title {
+            font-size: 1.7rem;
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .contact-description {
+            max-width: 48rem;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.75rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        
+        .venues-grid {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .venue-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            position: relative;
+        }
+        
+        .venue-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Event Page Thumbnails/IOE25_BevyThumbnail.png') center/cover;
+            opacity: 0.02;
+            z-index: 1;
+        }
+        
+        .venue-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .venue-image {
+            width: 100%;
+            height: 16rem;
+            object-fit: cover;
+        }
+        
+        .venue-info {
+            padding: 2rem;
+        }
+        
+        .venue-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .venue-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .venue-link {
+            color: var(--primary-blue);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .venue-link:hover {
+            color: var(--primary-green);
+        }
+        
+        .contact-info {
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-info::before {
+            content: '';
+            position: absolute;
+            z-index: 1;
+        }
+        
+        .contact-info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .contact-info-description {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .contact-email {
+            display: inline-block;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 2;
+            border: 2px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .contact-email:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(16, 185, 129, 0.2));
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+        }
+        
+        @media (min-width: 640px) {
+            .contact-section { padding: 8rem 0; }
+            .contact-info { padding: 3.5rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .venues-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem; }
+        }
+        
+        @media (min-width: 1024px) {
+            .venues-grid { gap: 3rem; }
+            .venue-info { padding: 2.5rem; }
+        }
+        
+        /* Schedule Section Classes */
+        .schedule-section {
+            padding: 6rem 0;
+            background: white;
+            position: relative;
+        }
+        
+        .schedule-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Event Page Banner/IOE25_Bevy_EventPageBanner.png') center/cover;
+            opacity: 0.02;
+            z-index: 1;
+        }
+        
+        .schedule-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .schedule-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .schedule-title {
+            font-size: 2rem;
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .schedule-description {
+            max-width: 48rem;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.75rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        
+        .schedule-timeline {
+            margin-top: 5rem;
+        }
+        
+        .timeline-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-primary);
+            margin-bottom: 3rem;
+        }
+        
+        .timeline-grid {
+            display: grid;
+            gap: 2.5rem;
+        }
+        
+        .timeline-card {
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timeline-day-0::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Chapter Banners/IOE25_Bevy_ChapterBanner_BR.png') center/cover;
+            opacity: 0.04;
+            z-index: 1;
+        }
+        
+        .timeline-day-1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Chapter Banners/IOE25_Bevy_ChapterBanner_BG.png') center/cover;
+            opacity: 0.04;
+            z-index: 1;
+        }
+        
+        .timeline-day-1 {
+            border: 2px solid var(--primary-blue);
+        }
+        
+        .timeline-day-2::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/Brand assets/Bevy Chapter Banners/IOE25_Bevy_ChapterBanner_GY.png') center/cover;
+            opacity: 0.04;
+            z-index: 1;
+        }
+        
+        .timeline-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .timeline-date {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .timeline-event {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .timeline-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 2;
+        }
+        
+        @media (min-width: 640px) {
+            .schedule-section { padding: 8rem 0; }
+            .schedule-container { padding: 0 1.5rem; }
+            .schedule-title { font-size: 2.5rem; }
+            .schedule-description { font-size: 1.125rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .timeline-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
+        }
+        
+        @media (min-width: 1024px) {
+            .schedule-container { padding: 0 2rem; }
+            .timeline-grid { gap: 2.5rem; }
+            .timeline-card { padding: 2.5rem; }
+        }
+        
+        /* Footer Classes */
+        .footer {
+            background: var(--tech-blue);
+            color: white;
+            padding: 3rem 0;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .footer-content {
+            text-align: center;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-logo-icon {
+            width: 2rem;
+            height: 2rem;
+            background: url('./assets/Brand assets/Logos - Core & Editable/IO_Extended_White.png') center/contain no-repeat;
+        }
+        
+        .footer-logo-text {
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+        
+        .footer-organizer {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .footer-copyright {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        @media (min-width: 640px) {
+            .footer-container { padding: 0 1.5rem; }
+        }
+        
+        @media (min-width: 1024px) {
+            .footer-container { padding: 0 2rem; }
+        }
+        
+        .padding-bottom-8 {
+            padding-bottom: 3rem;
+        }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Header & Navigation -->
-    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex-shrink-0">
-                    <a href="#home" class="font-bold text-xl">I/O Extended '25 Uiseong</a>
+    <header id="navbar" class="nav-header">
+        <div class="nav-container">
+            <div class="nav-inner">
+                <div class="nav-logo">
+                    <a href="#home" class="logo-link">
+                        <div class="logo-icon"></div>
+                        <span>I/O Extended '25 Uiseong</span>
+                    </a>
                 </div>
-                <div class="hidden md:block">
-                    <nav class="ml-10 flex items-baseline space-x-4">
-                        <a href="#about" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200 transition-colors">행사 소개</a>
-                        <a href="#cfp" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200 transition-colors">발표자 모집</a>
-                        <a href="#schedule" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200 transition-colors">일정</a>
-                        <a href="#contact" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200 transition-colors">장소 및 문의</a>
+                <div class="nav-desktop">
+                    <nav class="nav-menu">
+                        <a href="#about" class="nav-link">행사 소개</a>
+                        <a href="#cfp" class="nav-link">발표자 모집</a>
+                        <a href="#schedule" class="nav-link">일정</a>
+                        <a href="#contact" class="nav-link">장소 및 문의</a>
                     </nav>
                 </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                <div class="nav-mobile">
+                    <button id="mobile-menu-button" class="mobile-menu-btn">
                         <span class="sr-only">메뉴 열기</span>
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
-        <div id="mobile-menu" class="md:hidden hidden">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white">
-                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200">행사 소개</a>
-                <a href="#cfp" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200">발표자 모집</a>
-                <a href="#schedule" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200">일정</a>
-                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-200">장소 및 문의</a>
+        <div id="mobile-menu" class="mobile-menu">
+            <div class="mobile-menu-inner">
+                <a href="#about" class="mobile-nav-link">행사 소개</a>
+                <a href="#cfp" class="mobile-nav-link">발표자 모집</a>
+                <a href="#schedule" class="mobile-nav-link">일정</a>
+                <a href="#contact" class="mobile-nav-link">장소 및 문의</a>
             </div>
         </div>
     </header>
 
     <main>
         <!-- Hero Section -->
-        <section id="home" class="hero-bg pt-24 pb-16 sm:pt-32 sm:pb-24">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900">
-                    <span class="block">Google I/O Extended '25 in 의성</span>
-                    <span class="block accent-text mt-2">발표자를 모집합니다</span>
+        <section id="home" class="hero-section">
+            <div class="hero-container">
+                <h1 class="hero-title">
+                    <span class="hero-title-main">Google I/O Extended '25 in 의성</span>
+                    <span class="hero-title-sub">발표자를 모집합니다</span>
                 </h1>
-                <p class="mt-6 max-w-2xl mx-auto text-lg sm:text-xl text-gray-600">
+                <p class="hero-description">
                     당신의 지식과 경험을 공유하고, 경북 의성의 기술 생태계에 새로운 영감을 불어넣어 주세요.
                 </p>
-                <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <a href="#cfp" class="w-full sm:w-auto inline-block bg-gray-800 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:bg-black transition-all duration-300 transform hover:scale-105">
+                <div class="hero-cta">
+                    <a href="https://forms.gle/Npjeb2kqwKTVP8gY6" target="_blank" class="cta-button">
                         지금 발표 제안하기
                     </a>
                 </div>
-                <div class="mt-12">
-                    <p class="text-sm font-medium text-gray-600 mb-2">발표 제안 마감까지</p>
-                    <div id="countdown" class="flex justify-center space-x-4 text-gray-800">
-                        <div>
-                            <span id="days" class="text-3xl sm:text-4xl font-bold">00</span>
-                            <span class="block text-xs">일</span>
+                <div class="countdown-section">
+                    <div class="countdown-header">
+                        <p class="countdown-label">발표 제안 마감까지</p>
+                    </div>
+                    <div id="countdown" class="countdown-timer">
+                        <div class="countdown-item">
+                            <span id="days" class="countdown-number">00</span>
+                            <span class="countdown-unit">일</span>
                         </div>
-                        <div>
-                            <span id="hours" class="text-3xl sm:text-4xl font-bold">00</span>
-                            <span class="block text-xs">시간</span>
+                        <div class="countdown-item">
+                            <span id="hours" class="countdown-number">00</span>
+                            <span class="countdown-unit">시간</span>
                         </div>
-                        <div>
-                            <span id="minutes" class="text-3xl sm:text-4xl font-bold">00</span>
-                            <span class="block text-xs">분</span>
+                        <div class="countdown-item">
+                            <span id="minutes" class="countdown-number">00</span>
+                            <span class="countdown-unit">분</span>
                         </div>
-                        <div>
-                            <span id="seconds" class="text-3xl sm:text-4xl font-bold">00</span>
-                            <span class="block text-xs">초</span>
+                        <div class="countdown-item">
+                            <span id="seconds" class="countdown-number">00</span>
+                            <span class="countdown-unit">초</span>
                         </div>
                     </div>
                 </div>
@@ -134,94 +1353,85 @@
         </section>
 
         <!-- About Section -->
-        <section id="about" class="py-16 sm:py-24 bg-white">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">의성에서 만나는 기술의 미래</h2>
-                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+        <section id="about" class="about-section">
+            <div class="about-container">
+                <div class="section-header">
+                    <h2 class="section-title">의성에서 만나는 기술의 미래</h2>
+                    <p class="section-description">
                         Google I/O Extended Uiseong은 최신 기술 동향을 공유하고 지역의 개발자 커뮤니티와 함께 성장하기 위해 마련된 특별한 행사입니다. 아름다운 자연 속에서 새로운 아이디어를 얻고, 동료들과 깊이 있는 네트워킹을 경험하세요.
                     </p>
                 </div>
-                <div class="mt-16 grid gap-8 md:grid-cols-3">
-                    <div class="p-8 bg-gray-50 rounded-2xl">
-                        <div class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 text-blue-600">
-                            <span class="text-2xl">🤝</span>
-                        </div>
-                        <h3 class="mt-6 text-xl font-bold text-gray-900">네트워킹</h3>
-                        <p class="mt-2 text-base text-gray-600">기술 전문가, 지역 인재, 그리고 구글 직원들과 교류하며 소중한 인연을 만듭니다.</p>
+                <div class="about-features">
+                    <div class="feature-card">
+                        <h3 class="feature-title">네트워킹</h3>
+                        <p class="feature-description">기술 전문가, 지역 인재들과 함께 교류하며 소중한 인연을 만듭니다.</p>
                     </div>
-                    <div class="p-8 bg-gray-50 rounded-2xl">
-                         <div class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-600">
-                            <span class="text-2xl">💡</span>
-                        </div>
-                        <h3 class="mt-6 text-xl font-bold text-gray-900">교육 및 성장</h3>
-                        <p class="mt-2 text-base text-gray-600">실질적인 핸즈온과 깊이 있는 세션을 통해 기술 역량을 한 단계 성장시킵니다.</p>
+                    <div class="feature-card">
+                        <h3 class="feature-title">교육 및 성장</h3>
+                        <p class="feature-description">실질적인 핸즈온과 깊이 있는 세션을 통해 기술 역량을 한 단계 성장시킵니다.</p>
                     </div>
-                    <div class="p-8 bg-gray-50 rounded-2xl">
-                         <div class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 text-yellow-600">
-                            <span class="text-2xl">🚀</span>
-                        </div>
-                        <h3 class="mt-6 text-xl font-bold text-gray-900">지역 혁신</h3>
-                        <p class="mt-2 text-base text-gray-600">의성군의 성장 동력을 발굴하고, 기술로 지역 사회에 기여할 기회를 모색합니다.</p>
+                    <div class="feature-card">
+                        <h3 class="feature-title">지역 혁신</h3>
+                        <p class="feature-description">의성군의 성장 동력을 발굴하고, 기술로 지역 사회에 기여할 기회를 모색합니다.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Call for Papers (CFP) Section -->
-        <section id="cfp" class="py-16 sm:py-24">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">당신의 이야기를 들려주세요</h2>
-                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+        <section id="cfp" class="cfp-section">
+            <div class="cfp-container">
+                <div class="section-header">
+                    <h2 class="section-title">당신의 이야기를 들려주세요</h2>
+                    <p class="section-description">
                         아래 분야에 대한 전문성과 경험을 가진 발표자 여러분을 기다립니다. 당신의 인사이트를 공유하고 커뮤니티와 함께 성장하는 특별한 경험을 만들어보세요.
                     </p>
                 </div>
                 
-                <div class="mt-16 grid md:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900">발표자 혜택</h3>
-                        <div class="mt-6 space-y-6">
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full accent-bg text-white">✓</div>
-                                <p class="ml-4 text-base text-gray-600"><strong class="font-semibold text-gray-900">강사비 지급:</strong> 선정된 세션 발표자에게는 소정의 강사비(50만원)를 지급합니다.</p>
+                <div class="cfp-content">
+                    <div class="benefits-section">
+                        <h3 class="benefits-title">발표자 혜택</h3>
+                        <div class="benefits-list">
+                            <div class="benefit-item">
+                                <div class="benefit-icon">✓</div>
+                                <p class="benefit-text"><strong>강사비 지급:</strong> 선정된 세션 발표자에게는 소정의 강사비를 지급합니다.</p>
                             </div>
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full accent-bg text-white">✓</div>
-                                <p class="ml-4 text-base text-gray-600"><strong class="font-semibold text-gray-900">네트워킹 기회:</strong> 구글 직원, IT 전문가, 지역 인재들과의 깊이 있는 네트워킹 파티에 초대됩니다.</p>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">✓</div>
+                                <p class="benefit-text"><strong>네트워킹 기회:</strong> 구글 직원, IT 전문가, 지역 인재들과의 깊이 있는 네트워킹 파티에 초대됩니다.</p>
                             </div>
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full accent-bg text-white">✓</div>
-                                <p class="ml-4 text-base text-gray-600"><strong class="font-semibold text-gray-900">홍보 지원:</strong> GDG 커뮤니티 및 관련 채널을 통해 발표자와 세션을 적극적으로 홍보해 드립니다.</p>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">✓</div>
+                                <p class="benefit-text"><strong>홍보 지원:</strong> GDG 커뮤니티 및 관련 채널을 통해 발표자와 세션을 적극적으로 홍보해 드립니다.</p>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900">모집 분야</h3>
-                        <div class="mt-6 flex flex-wrap gap-3">
-                            <span class="px-4 py-2 rounded-full bg-blue-100 text-blue-800 font-medium">Google I/O 2025 Recap</span>
-                            <span class="px-4 py-2 rounded-full bg-green-100 text-green-800 font-medium">Gemini 프로젝트</span>
-                            <span class="px-4 py-2 rounded-full bg-yellow-100 text-yellow-800 font-medium">AI/ML 활용 사례</span>
-                            <span class="px-4 py-2 rounded-full bg-purple-100 text-purple-800 font-medium">커리어 & 소프트스킬</span>
-                            <span class="px-4 py-2 rounded-full bg-indigo-100 text-indigo-800 font-medium">US 해커톤 우수작</span>
-                            <span class="px-4 py-2 rounded-full bg-pink-100 text-pink-800 font-medium">클라우드 기술</span>
-                            <span class="px-4 py-2 rounded-full bg-red-100 text-red-800 font-medium">Google ADK Deep Dive</span>
-                            <span class="px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium">기타 산업 트렌드</span>
+                    <div class="topics-section">
+                        <h3 class="topics-title">모집 분야</h3>
+                        <div class="topics-grid">
+                            <span class="topic-tag topic-blue">Google I/O 2025 Recap</span>
+                            <span class="topic-tag topic-green">Gemini 프로젝트</span>
+                            <span class="topic-tag topic-yellow">AI/ML 활용 사례</span>
+                            <span class="topic-tag topic-purple">커리어 & 소프트스킬</span>
+                            <span class="topic-tag topic-pink">클라우드 기술</span>
+                            <span class="topic-tag topic-gray">기타 IT 트렌드</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-20 p-8 bg-gray-50 rounded-2xl border border-gray-200 text-center">
-                    <h3 class="text-2xl font-bold text-gray-900">지원 방법</h3>
-                    <p class="mt-3 text-base text-gray-600">
+                <div class="application-section">
+                    <div class="application-header">
+                        <h3 class="application-title">지원 방법</h3>
+                    </div>
+                    <p class="application-description">
                         CFP 기간은 <strong class="accent-text">7월 14일(월)부터 8월 2일(토)까지</strong>입니다. 아래 버튼을 눌러 지금 바로 지원하세요!
                     </p>
-                    <div class="mt-6">
-                        <a href="#" target="_blank" class="w-full sm:w-auto inline-block bg-gray-800 text-white font-bold text-lg px-10 py-4 rounded-lg shadow-lg hover:bg-black transition-all duration-300 transform hover:scale-105">
-                            발표 제안서 제출하기 (Google Form)
+                    <div class="application-button-container">
+                        <a href="https://forms.gle/Npjeb2kqwKTVP8gY6" target="_blank" class="application-button">
+                            발표 제안서 제출하기
                         </a>
                     </div>
-                     <p class="mt-4 text-sm text-gray-500">* 기본 정보는 구글폼으로, 발표 자료는 추후 메일로 안내 및 수합 예정입니다.</p>
+                     <p class="application-note">* 기본 정보는 온라인 폼으로, 발표 자료는 추후 메일로 안내 및 수합 예정입니다.</p>
                 </div>
             </div>
         </section>
@@ -229,35 +1439,27 @@
         <!-- Schedule Section -->
         <section id="schedule" class="py-16 sm:py-24 bg-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">주요 일정</h2>
-                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
-                        발표자 모집부터 행사일까지의 전체적인 흐름을 확인하세요.
+                <div class="section-header">
+                    <h2 class="section-title">행사 타임라인</h2>
+                    <p class="section-description">
+                        8월 17일부터 19일까지, 의성에서 펼쳐지는 특별한 기술 여정을 함께하세요.
                     </p>
-                </div>
-                
-                <div class="mt-16">
-                    <h3 class="text-2xl font-bold text-center text-gray-900">발표자 선정 절차</h3>
-                    <div class="chart-container mt-8">
-                        <canvas id="cfpTimelineChart"></canvas>
-                    </div>
                 </div>
 
                 <div class="mt-20">
-                    <h3 class="text-2xl font-bold text-center text-gray-900">행사 타임라인 (8/17 ~ 8/19)</h3>
                     <div class="mt-12 grid gap-10 md:grid-cols-3">
                         <div class="p-6 bg-gray-50 rounded-2xl">
-                            <p class="text-sm font-semibold accent-text">DAY 0 | 8/17 (일)</p>
+                            <p class="text-sm font-bold accent-text">DAY 0 | 8/17 (일)</p>
                             <h4 class="mt-2 text-xl font-bold text-gray-900">의성에 머물다: 네트워킹 파티</h4>
-                            <p class="mt-3 text-base text-gray-600">발표자와 주요 관계자들이 미리 모여 교류하는 시간입니다. AI 요리, 컬링 등 특별한 액티비티가 준비됩니다.</p>
+                            <p class="mt-3 text-base text-gray-600">발표자와 주요 관계자들이 미리 모여 교류하는 시간입니다. 다양한 액티비티가 준비됩니다.</p>
                         </div>
                         <div class="p-6 bg-gray-50 rounded-2xl border-2 accent-border">
-                             <p class="text-sm font-semibold accent-text">DAY 1 | 8/18 (월)</p>
+                             <p class="text-sm font-bold accent-text">DAY 1 | 8/18 (월)</p>
                             <h4 class="mt-2 text-xl font-bold text-gray-900">Google AI를 만나다: 본 컨퍼런스</h4>
                             <p class="mt-3 text-base text-gray-600">키노트를 시작으로 발표 세션(A트랙)과 핸즈온(B트랙)이 동시에 진행되며, 네트워킹 시간도 마련됩니다.</p>
                         </div>
                         <div class="p-6 bg-gray-50 rounded-2xl">
-                             <p class="text-sm font-semibold accent-text">DAY 2 | 8/19 (화)</p>
+                             <p class="text-sm font-bold accent-text">DAY 2 | 8/19 (화)</p>
                             <h4 class="mt-2 text-xl font-bold text-gray-900">의성을 발견하다: 로컬 스토리</h4>
                             <p class="mt-3 text-base text-gray-600">의성 지역의 스타트업 및 IT 생태계 이야기를 듣고, 기술과 지역의 상생 가능성을 모색합니다.</p>
                         </div>
@@ -267,46 +1469,51 @@
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="py-16 sm:py-24">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                 <div class="text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">행사 장소</h2>
-                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+        <section id="contact" class="contact-section">
+            <div class="contact-container">
+                <div class="section-header">
+                    <h2 class="section-title">행사 장소</h2>
+                    <p class="section-description">
                         자연과 기술이 어우러진 특별한 공간에서 여러분을 맞이합니다.
                     </p>
                 </div>
-                <div class="mt-16 grid md:grid-cols-2 gap-8">
-                     <div class="rounded-lg overflow-hidden">
-                        <img src="https://lh3.googleusercontent.com/drive-viewer/AKGpihbz6eKq81xM4T7G5U300L_i1F6z5K_jG4b9s0n-o6W02933_3p5-5654zN5i5n7u_E7v-76f87Cq9x7U15Fk1U-v4=s1600" alt="의성 청출어람 건물 외관" class="w-full h-64 object-cover">
-                        <div class="p-6 bg-gray-50">
-                            <h3 class="font-bold text-lg">메인 컨퍼런스: 의성 청출어람</h3>
-                            <p class="text-gray-600 mt-2">최신 시설을 갖춘 컨퍼런스 장소입니다.</p>
-                            <a href="https://naver.me/GgWCnWC3" target="_blank" class="accent-text font-semibold mt-4 inline-block">지도 보기 &rarr;</a>
+                <div class="venues-grid">
+                     <div class="venue-card">
+                        <img src="./assets/place1.jpg" alt="의성 청출어람 건물 외관" class="venue-image">
+                        <div class="venue-info">
+                            <h3 class="venue-title">메인 컨퍼런스: 의성 청출어람</h3>
+                            <p class="venue-description">최신 시설을 갖춘 모던 IT 컨퍼런스 장소입니다.</p>
+                            <a href="https://naver.me/GgWCnWC3" target="_blank" class="venue-link">지도 보기 &rarr;</a>
                         </div>
                     </div>
-                    <div class="rounded-lg overflow-hidden">
-                        <img src="https://lh3.googleusercontent.com/drive-viewer/AKGpihbvjQWJ5_e5t2yJ98lX8x1b9P36uD69QyJd552V-G4j9m7G2k5Yg_7y79xN40o9n6f9u424tU0v6O6r22yJ9A23d7t=s1600" alt="논밭에 건물과 주변 풍경" class="w-full h-64 object-cover">
-                         <div class="p-6 bg-gray-50">
-                            <h3 class="font-bold text-lg">네트워킹 파티: 논밭에</h3>
-                            <p class="text-gray-600 mt-2">의성의 아름다운 경치를 감상할 수 있는 공간입니다.</p>
-                             <a href="https://naver.me/FW6zVOs9" target="_blank" class="accent-text font-semibold mt-4 inline-block">지도 보기 &rarr;</a>
+                    <div class="venue-card">
+                        <img src="./assets/place2.jpg" alt="논밭에 건물과 주변 풍경" class="venue-image">
+                         <div class="venue-info">
+                            <h3 class="venue-title">네트워킹 파티: 논밭에</h3>
+                            <p class="venue-description">의성의 아름다운 경치를 감상할 수 있는 자연친화적 공간입니다.</p>
+                             <a href="https://naver.me/FW6zVOs9" target="_blank" class="venue-link">지도 보기 &rarr;</a>
                         </div>
                     </div>
                 </div>
-                <div class="mt-16 text-center">
-                     <h3 class="text-2xl font-bold text-gray-900">문의하기</h3>
-                     <p class="mt-4 text-lg text-gray-600">행사 관련 문의사항은 아래 이메일로 연락주세요.</p>
-                     <a href="mailto:contact@example.com" class="mt-4 inline-block font-bold text-xl accent-text">contact@example.com</a>
+                <div class="contact-info">
+                     <h3 class="contact-info-title">문의하기</h3>
+                     <a href="mailto:gdg-daegu-a@googlegroups.com" class="contact-email">gdg-daegu-a@googlegroups.com</a>
                 </div>
             </div>
         </section>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white">
-        <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
-            <p class="font-bold">주최/주관: 메이드인피플, GDG 대구</p>
-            <p class="mt-4 text-sm text-gray-400">&copy; 2025 Google I/O Extended Uiseong. All rights reserved.</p>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="footer-logo-icon"></div>
+                    <span class="footer-logo-text">Google I/O Extended '25 Uiseong</span>
+                </div>
+                <p class="footer-organizer">주최/주관: 메이드인피플, GDG 대구</p>
+                <p class="footer-copyright">&copy; 2025 Google I/O Extended Uiseong. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
