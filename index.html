@@ -161,7 +161,12 @@
         }
         .mobile-menu-btn:focus { outline: 2px solid transparent; outline-offset: 2px; }
         .mobile-menu-icon { height: 1.5rem; width: 1.5rem; }
-        .mobile-menu { display: none; }
+        .mobile-menu { 
+            display: none; 
+        }
+        .mobile-menu.show { 
+            display: block; 
+        }
         .mobile-menu-inner { 
             padding: 1rem; 
             background: rgba(255, 255, 255, 0.95);
@@ -382,6 +387,7 @@
             .nav-desktop { display: block; }
             .nav-mobile { display: none; }
             .mobile-menu { display: none !important; }
+            .mobile-menu.show { display: none !important; }
             .hero-title { font-size: 4rem; }
             .about-features { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem; }
         }
@@ -1015,7 +1021,7 @@
             color: var(--primary-blue);
             text-decoration: none;
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
-            padding: 1rem 2rem;
+            padding: 1rem 1.5rem;
             border-radius: 0.75rem;
             transition: all 0.3s;
             position: relative;
@@ -1358,7 +1364,7 @@
                 <div class="section-header">
                     <h2 class="section-title">의성에서 만나는 기술의 미래</h2>
                     <p class="section-description">
-                        Google I/O Extended Uiseong은 최신 기술 동향을 공유하고 지역의 개발자 커뮤니티와 함께 성장하기 위해 마련된 특별한 행사입니다. 아름다운 자연 속에서 새로운 아이디어를 얻고, 동료들과 깊이 있는 네트워킹을 경험하세요.
+                        Google I/O Extended Uiseong은 최신 기술 동향을<br> 공유하고 지역의 개발자 커뮤니티와 함께 성장하기 위해 마련된 특별한 행사입니다. 아름다운 자연 속에서 새로운 아이디어를 얻고, 동료들과 깊이 있는 네트워킹을 경험하세요.
                     </p>
                 </div>
                 <div class="about-features">
@@ -1384,7 +1390,7 @@
                 <div class="section-header">
                     <h2 class="section-title">당신의 이야기를 들려주세요</h2>
                     <p class="section-description">
-                        아래 분야에 대한 전문성과 경험을 가진 발표자 여러분을 기다립니다. 당신의 인사이트를 공유하고 커뮤니티와 함께 성장하는 특별한 경험을 만들어보세요.
+                        아래 분야에 대한 전문성과 경험을 가진 발표자 여러분을<br> 기다립니다. 당신의 인사이트를 공유하고 커뮤니티와 함께 성장하는 특별한 경험을 만들어보세요.
                     </p>
                 </div>
                 
@@ -1424,7 +1430,7 @@
                         <h3 class="application-title">지원 방법</h3>
                     </div>
                     <p class="application-description">
-                        CFP 기간은 <strong class="accent-text">7월 14일(월)부터 8월 2일(토)까지</strong>입니다. 아래 버튼을 눌러 지금 바로 지원하세요!
+                        CFP 기간은 <strong class="accent-text">7월 15일(월)부터 7월 24일(목)까지</strong>입니다. 아래 버튼을 눌러 지금 바로 지원하세요!
                     </p>
                     <div class="application-button-container">
                         <a href="https://forms.gle/Npjeb2kqwKTVP8gY6" target="_blank" class="application-button">
@@ -1442,7 +1448,7 @@
                 <div class="section-header">
                     <h2 class="section-title">행사 타임라인</h2>
                     <p class="section-description">
-                        8월 17일부터 19일까지, 의성에서 펼쳐지는 특별한 기술 여정을 함께하세요.
+                        8월 17일부터 19일까지,<br>의성에서 펼쳐지는 특별한 기술 여정을 함께하세요.
                     </p>
                 </div>
 
@@ -1523,14 +1529,14 @@
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('show');
             });
 
             // Close mobile menu on link click
             const mobileNavLinks = mobileMenu.querySelectorAll('a');
             mobileNavLinks.forEach(link => {
                 link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('show');
                 });
             });
 
@@ -1547,7 +1553,7 @@
             // Countdown Timer
             const countdownElement = document.getElementById('countdown');
             if (countdownElement) {
-                const countDownDate = new Date("Aug 2, 2025 23:59:59").getTime();
+                const countDownDate = new Date("Jul 24, 2025 23:59:59").getTime();
 
                 const updateCountdown = () => {
                     const now = new Date().getTime();
