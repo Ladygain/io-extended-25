@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google I/O Extended '25 in 의성 - Call for Papers</title>
+    <title>DevFest 2025 in Daegu - Call for Speakers</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,24 +21,21 @@
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         :root {
-            /* Google I/O Extended Color Palette */
-            --primary-blue: #1a73e8;
-            --primary-green: #34a853;
-            --primary-purple: #9334e6;
-            --primary-orange: #ff6d00;
-            --primary-red: #ea4335;
-            --gradient-start: #667eea;
-            --gradient-end: #764ba2;
-            --tech-blue: #0f172a;
-            --tech-light-blue: #3b82f6;
-            --tech-green: #10b981;
-            --tech-purple: #8b5cf6;
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --bg-dark: #0f172a;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --text-light: #94a3b8;
+            /* DevFest 2025 Color Palette */
+            --core-blue: #4285f4;
+            --core-green: #34a853;
+            --core-yellow: #f9ab00;
+            --core-red: #ea4335;
+            --halftone-blue: #57caff;
+            --halftone-green: #5cdb6d;
+            --halftone-yellow: #ffd427;
+            --halftone-red: #ff7daf;
+            --pastels-blue: #c3ecf6;
+            --pastels-green: #ccf6c5;
+            --pastels-yellow: #ffe7a5;
+            --pastels-red: #f8d8d8;
+            --grayscale-offwhile: #f0f0f0;
+            --grayscale-black: #1e1e1e;
         }
         
         body {
@@ -66,16 +63,16 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('./assets/Brand assets/Bevy Event Page Banner/IOE25_Bevy_EventPageBanner.png') center/cover;
+            background: url('./assets/Brand assets/Bevy Event Page Banner/DF25-Web-Header-2650x500-Editable') center/cover;
             opacity: 0.1;
             z-index: 1;
         }
         
         
-        .accent-bg { background: linear-gradient(135deg, var(--primary-blue), var(--primary-green)); }
-        .accent-text { color: var(--primary-blue); }
-        .accent-border { border-color: var(--primary-blue); }
-        .accent-bg-hover:hover { background: linear-gradient(135deg, var(--primary-green), var(--primary-blue)); }
+        .accent-bg { background: linear-gradient(135deg, var(--core-blue), var(--core-green)); }
+        .accent-text { color: var(--core-blue); }
+        .accent-border { border-color: var(--core-blue); }
+        .accent-bg-hover:hover { background: linear-gradient(135deg, var(--core-green), var(--core-blue)); }
         .nav-scrolled {
             background-color: rgba(253, 252, 251, 0.8);
             backdrop-filter: blur(8px);
@@ -139,7 +136,7 @@
             position: relative;
         }
         .nav-link:hover { 
-            color: var(--primary-blue); 
+            color: var(--core-blue); 
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 52, 230, 0.1));
         }
         .nav-mobile { display: block; }
@@ -156,7 +153,7 @@
             transition: all 0.2s;
         }
         .mobile-menu-btn:hover { 
-            color: var(--primary-blue); 
+            color: var(--core-blue); 
             background: rgba(59, 130, 246, 0.1);
         }
         .mobile-menu-btn:focus { outline: 2px solid transparent; outline-offset: 2px; }
@@ -187,7 +184,7 @@
             transition: all 0.2s;
         }
         .mobile-nav-link:hover { 
-            color: var(--primary-blue); 
+            color: var(--core-blue); 
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 52, 230, 0.1));
         }
         
@@ -247,7 +244,7 @@
         .hero-title-main { display: block; }
         .hero-title-sub { 
             display: block; 
-            color: var(--primary-blue);
+            color: var(--core-blue);
             margin-top: 0.5rem;
             font-size: 0.9em;
         }
@@ -505,7 +502,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            background: linear-gradient(135deg, var(--core-blue), var(--core-green));
         }
         
         .feature-card:hover { 
@@ -525,7 +522,7 @@
         
         .feature-icon-blue { 
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 52, 230, 0.1));
-            color: var(--primary-blue);
+            color: var(--core-blue);
         }
         
         .feature-icon-green { 
@@ -691,7 +688,7 @@
             width: 1.5rem;
             height: 1.5rem;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            background: linear-gradient(135deg, var(--core-blue), var(--core-green));
             color: white;
             font-size: 0.875rem;
             font-weight: 700;
@@ -735,13 +732,13 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
-        .topic-blue { background: rgba(59, 130, 246, 0.1); color: var(--primary-blue); border-color: rgba(59, 130, 246, 0.2); }
-        .topic-green { background: rgba(16, 185, 129, 0.1); color: var(--tech-green); border-color: rgba(16, 185, 129, 0.2); }
-        .topic-yellow { background: rgba(255, 109, 0, 0.1); color: var(--primary-orange); border-color: rgba(255, 109, 0, 0.2); }
-        .topic-purple { background: rgba(147, 52, 230, 0.1); color: var(--primary-purple); border-color: rgba(147, 52, 230, 0.2); }
-        .topic-indigo { background: rgba(139, 92, 246, 0.1); color: var(--tech-purple); border-color: rgba(139, 92, 246, 0.2); }
+        .topic-blue { background: rgba(59, 130, 246, 0.1); color: var(--core-blue); border-color: rgba(59, 130, 246, 0.2); }
+        .topic-green { background: rgba(16, 185, 129, 0.1); color: var(--halftones-green); border-color: rgba(16, 185, 129, 0.2); }
+        .topic-yellow { background: rgba(255, 109, 0, 0.1); color: var(--core-orange); border-color: rgba(255, 109, 0, 0.2); }
+        .topic-purple { background: rgba(147, 52, 230, 0.1); color: var(--core-purple); border-color: rgba(147, 52, 230, 0.2); }
+        .topic-indigo { background: rgba(139, 92, 246, 0.1); color: var(--halftones-purple); border-color: rgba(139, 92, 246, 0.2); }
         .topic-pink { background: rgba(236, 72, 153, 0.1); color: #ec4899; border-color: rgba(236, 72, 153, 0.2); }
-        .topic-red { background: rgba(234, 67, 53, 0.1); color: var(--primary-red); border-color: rgba(234, 67, 53, 0.2); }
+        .topic-red { background: rgba(234, 67, 53, 0.1); color: var(--core-red); border-color: rgba(234, 67, 53, 0.2); }
         .topic-gray { background: rgba(107, 114, 128, 0.1); color: var(--text-secondary); border-color: rgba(107, 114, 128, 0.2); }
         
         .application-section {
@@ -801,7 +798,7 @@
         .application-button {
             display: inline-block;
             background: white;
-            color: var(--primary-blue);
+            color: var(--core-blue);
             font-weight: 700;
             font-size: 1.125rem;
             padding: 1rem 2.5rem;
@@ -875,7 +872,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('./assets/Brand assets/Bevy Event Page Thumbnails/IOE25_BevyThumbnail.png') center/cover;
+            background: url('./assets/Brand assets/Bevy Event Page Thumbnails/DF25-Event-thumbnail-year-square.png') center/cover;
             opacity: 0.02;
             z-index: 1;
         }
@@ -934,7 +931,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('./assets/Brand assets/Bevy Event Page Thumbnails/IOE25_BevyThumbnail.png') center/cover;
+            background: url('./assets/Brand assets/Bevy Event Page Thumbnails/DF25-Event-thumbnail-year-square.png') center/cover;
             opacity: 0.02;
             z-index: 1;
         }
@@ -972,7 +969,7 @@
         }
         
         .venue-link {
-            color: var(--primary-blue);
+            color: var(--core-blue);
             font-weight: 600;
             text-decoration: none;
             transition: all 0.2s;
@@ -981,7 +978,7 @@
         }
         
         .venue-link:hover {
-            color: var(--primary-green);
+            color: var(--core-green);
         }
         
         .contact-info {
@@ -1018,7 +1015,7 @@
             display: inline-block;
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--primary-blue);
+            color: var(--core-blue);
             text-decoration: none;
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
             padding: 1rem 1.5rem;
@@ -1152,7 +1149,7 @@
         }
         
         .timeline-day-1 {
-            border: 2px solid var(--primary-blue);
+            border: 2px solid var(--core-blue);
         }
         
         .timeline-day-2::before {
@@ -1175,7 +1172,7 @@
         .timeline-date {
             font-size: 0.875rem;
             font-weight: 600;
-            color: var(--primary-blue);
+            color: var(--core-blue);
             margin-bottom: 0.5rem;
             position: relative;
             z-index: 2;
@@ -1285,7 +1282,7 @@
                 <div class="nav-logo">
                     <a href="#home" class="logo-link">
                         <div class="logo-icon"></div>
-                        <span>I/O Extended '25 Uiseong</span>
+                        <span>DevFest 2025 in Daegu</span>
                     </a>
                 </div>
                 <div class="nav-desktop">
@@ -1321,14 +1318,14 @@
         <section id="home" class="hero-section">
             <div class="hero-container">
                 <h1 class="hero-title">
-                    <span class="hero-title-main">Google I/O Extended '25 in 의성</span>
-                    <span class="hero-title-sub">발표자를 모집합니다</span>
+                    <span class="hero-title-main">DevFest 2025 in Daegu</span>
+                    <span class="hero-title-sub">2025년을 함께 회고할 발표자를 모집합니다</span>
                 </h1>
                 <p class="hero-description">
-                    당신의 지식과 경험을 공유하고, 경북 의성의 기술 생태계에 새로운 영감을 불어넣어 주세요.
+                    당신의 한해동안 경험한 지식과 기술의 온도를 측정하고, 대구경북 지역 학생 및 개발자에도 온기와 영감을 전해 주세요 :)
                 </p>
                 <div class="hero-cta">
-                    <a href="https://forms.gle/Npjeb2kqwKTVP8gY6" target="_blank" class="cta-button">
+                    <a href="https://forms.gle/1XPaiEvniejt9qt18" target="_blank" class="cta-button">
                         지금 발표 제안하기
                     </a>
                 </div>
@@ -1362,23 +1359,23 @@
         <section id="about" class="about-section">
             <div class="about-container">
                 <div class="section-header">
-                    <h2 class="section-title">의성에서 만나는 기술의 미래</h2>
+                    <h2 class="section-title">대구에서 만나는 기술의 온도</h2>
                     <p class="section-description">
-                        Google I/O Extended Uiseong은 최신 기술 동향을<br> 공유하고 지역의 개발자 커뮤니티와 함께 성장하기 위해 마련된 특별한 행사입니다. 아름다운 자연 속에서 새로운 아이디어를 얻고, 동료들과 깊이 있는 네트워킹을 경험하세요.
+                        DevFest 2025 in Daegu는 구글의 최신 기술과 서비스와 함께 한 경험을 공유하고<br> 지역 개발자 커뮤니티와 함께 성장하기 위해 마련된 특별한 연말 행사입니다.<br> 따뜻한 공감과 연대 속에서 함께 만들어가는 기술 온도를 느끼고, 온기를 나눌 네트워킹을 경험하세요!
                     </p>
                 </div>
                 <div class="about-features">
                     <div class="feature-card">
                         <h3 class="feature-title">네트워킹</h3>
-                        <p class="feature-description">기술 전문가, 지역 인재들과 함께 교류하며 소중한 인연을 만듭니다.</p>
+                        <p class="feature-description">기술 전문가 및 지역 인재들과 함께 교류하며 소중한 인연을 만듭니다.</p>
                     </div>
                     <div class="feature-card">
-                        <h3 class="feature-title">교육 및 성장</h3>
-                        <p class="feature-description">실질적인 핸즈온과 깊이 있는 세션을 통해 기술 역량을 한 단계 성장시킵니다.</p>
+                        <h3 class="feature-title">경험과 성장</h3>
+                        <p class="feature-description">실질적인 핸즈온과 깊이 있는 세션을 통해 기술 역량이 한 단계 성장합니다.</p>
                     </div>
                     <div class="feature-card">
                         <h3 class="feature-title">지역 혁신</h3>
-                        <p class="feature-description">의성군의 성장 동력을 발굴하고, 기술로 지역 사회에 기여할 기회를 모색합니다.</p>
+                        <p class="feature-description">대구 경북의 성장 동력을 발굴하고, 기술로 지역 사회에 기여할 기회를 모색합니다.</p>
                     </div>
                 </div>
             </div>
@@ -1390,7 +1387,7 @@
                 <div class="section-header">
                     <h2 class="section-title">당신의 이야기를 들려주세요</h2>
                     <p class="section-description">
-                        아래 분야에 대한 전문성과 경험을 가진 발표자 여러분을<br> 기다립니다. 당신의 인사이트를 공유하고 커뮤니티와 함께 성장하는 특별한 경험을 만들어보세요.
+                        아래 분야에 대한 전문성과 경험을 가진 발표자 여러분을 기다립니다.<br> 당신의 인사이트를 공유하고 지역 커뮤니티와 함께 성장하는 특별한 경험을 만들어보세요.
                     </p>
                 </div>
                 
@@ -1400,11 +1397,11 @@
                         <div class="benefits-list">
                             <div class="benefit-item">
                                 <div class="benefit-icon">✓</div>
-                                <p class="benefit-text"><strong>강사비 지급:</strong> 선정된 세션 발표자에게는 소정의 강사비를 지급합니다.</p>
+                                <p class="benefit-text"><strong>교통비/연사료 지급:</strong> 선정된 세션 발표자에게는 왕복교통비와 소정의 연사료를 지급합니다.</p>
                             </div>
                             <div class="benefit-item">
                                 <div class="benefit-icon">✓</div>
-                                <p class="benefit-text"><strong>네트워킹 기회:</strong> 구글 직원, IT 전문가, 지역 인재들과의 깊이 있는 네트워킹 파티에 초대됩니다.</p>
+                                <p class="benefit-text"><strong>네트워킹 기회:</strong> 구글러, IT 전문가, 지역 인재들과의 깊이 있는 네트워킹 기회가 주어집니다.</p>
                             </div>
                             <div class="benefit-item">
                                 <div class="benefit-icon">✓</div>
@@ -1415,11 +1412,10 @@
                     <div class="topics-section">
                         <h3 class="topics-title">모집 분야</h3>
                         <div class="topics-grid">
-                            <span class="topic-tag topic-blue">Google I/O 2025 Recap</span>
-                            <span class="topic-tag topic-green">Gemini 프로젝트</span>
+                            <span class="topic-tag topic-blue">Gemini 프로젝트</span>
+                            <span class="topic-tag topic-green">클라우드 기술</span>
                             <span class="topic-tag topic-yellow">AI/ML 활용 사례</span>
                             <span class="topic-tag topic-purple">커리어 & 소프트스킬</span>
-                            <span class="topic-tag topic-pink">클라우드 기술</span>
                             <span class="topic-tag topic-gray">기타 IT 트렌드</span>
                         </div>
                     </div>
@@ -1430,46 +1426,14 @@
                         <h3 class="application-title">지원 방법</h3>
                     </div>
                     <p class="application-description">
-                        CFP 기간은 <strong class="accent-text">7월 15일(월)부터 7월 24일(목)까지</strong>입니다. 아래 버튼을 눌러 지금 바로 지원하세요!
+                        CFS 기간은 <strong class="accent-text">10월 20일(월)부터 11월 30일(일)까지</strong>입니다. 아래 버튼을 눌러 지금 바로 지원하세요!
                     </p>
                     <div class="application-button-container">
-                        <a href="https://forms.gle/Npjeb2kqwKTVP8gY6" target="_blank" class="application-button">
+                        <a href="https://forms.gle/1XPaiEvniejt9qt18" target="_blank" class="application-button">
                             발표 제안서 제출하기
                         </a>
                     </div>
                      <p class="application-note">* 기본 정보는 온라인 폼으로, 발표 자료는 추후 메일로 안내 및 수합 예정입니다.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Schedule Section -->
-        <section id="schedule" class="py-16 sm:py-24 bg-white">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="section-header">
-                    <h2 class="section-title">행사 타임라인</h2>
-                    <p class="section-description">
-                        8월 17일부터 19일까지,<br>의성에서 펼쳐지는 특별한 기술 여정을 함께하세요.
-                    </p>
-                </div>
-
-                <div class="mt-20">
-                    <div class="mt-12 grid gap-10 md:grid-cols-3">
-                        <div class="p-6 bg-gray-50 rounded-2xl">
-                            <p class="text-sm font-bold accent-text">DAY 0 | 8/17 (일)</p>
-                            <h4 class="mt-2 text-xl font-bold text-gray-900">의성에 머물다: 네트워킹 파티</h4>
-                            <p class="mt-3 text-base text-gray-600">발표자와 주요 관계자들이 미리 모여 교류하는 시간입니다. 다양한 액티비티가 준비됩니다.</p>
-                        </div>
-                        <div class="p-6 bg-gray-50 rounded-2xl border-2 accent-border">
-                             <p class="text-sm font-bold accent-text">DAY 1 | 8/18 (월)</p>
-                            <h4 class="mt-2 text-xl font-bold text-gray-900">Google AI를 만나다: 본 컨퍼런스</h4>
-                            <p class="mt-3 text-base text-gray-600">키노트를 시작으로 발표 세션(A트랙)과 핸즈온(B트랙)이 동시에 진행되며, 네트워킹 시간도 마련됩니다.</p>
-                        </div>
-                        <div class="p-6 bg-gray-50 rounded-2xl">
-                             <p class="text-sm font-bold accent-text">DAY 2 | 8/19 (화)</p>
-                            <h4 class="mt-2 text-xl font-bold text-gray-900">의성을 발견하다: 로컬 스토리</h4>
-                            <p class="mt-3 text-base text-gray-600">의성 지역의 스타트업 및 IT 생태계 이야기를 듣고, 기술과 지역의 상생 가능성을 모색합니다.</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -1480,24 +1444,24 @@
                 <div class="section-header">
                     <h2 class="section-title">행사 장소</h2>
                     <p class="section-description">
-                        자연과 기술이 어우러진 특별한 공간에서 여러분을 맞이합니다.
+                        창의(Creative)와 혁신의 장(場)으로 2023년 12월에 개관한 경북대학교 크리에이티브 파크에서 진행됩니다.
                     </p>
                 </div>
                 <div class="venues-grid">
                      <div class="venue-card">
-                        <img src="./assets/place1.jpg" alt="의성 청춘어람 건물 외관" class="venue-image">
+                        <img src="./assets/place1.jpeg" alt="대구 크리에이티브 파크 외관" class="venue-image">
                         <div class="venue-info">
-                            <h3 class="venue-title">메인 컨퍼런스: 의성 청춘어람</h3>
-                            <p class="venue-description">최신 시설을 갖춘 모던 IT 컨퍼런스 장소입니다.</p>
-                            <a href="https://naver.me/GgWCnWC3" target="_blank" class="venue-link">지도 보기 &rarr;</a>
+                            <h3 class="venue-title">경북대 크리에이티브 파크(Kreative Park)</h3>
+                            <p class="venue-description">메인홀, 세미나실 등 최신 시설을 갖춘 컨퍼런스 장소입니다.</p>
+                            <a href="https://naver.me/FqZmnl4w" target="_blank" class="venue-link">지도 보기 &rarr;</a>
                         </div>
                     </div>
                     <div class="venue-card">
-                        <img src="./assets/place2.jpg" alt="논밭에 건물과 주변 풍경" class="venue-image">
+                        <img src="./assets/place2.jpeg" alt="대구 크리에이티브 파크 내부" class="venue-image">
                          <div class="venue-info">
-                            <h3 class="venue-title">네트워킹 파티: 논밭에</h3>
-                            <p class="venue-description">의성의 아름다운 경치를 감상할 수 있는 자연친화적 공간입니다.</p>
-                             <a href="https://naver.me/FW6zVOs9" target="_blank" class="venue-link">지도 보기 &rarr;</a>
+                            <h3 class="venue-title">대형 화면을 갖춘 메인 세션장</h3>
+                            <p class="venue-description">효과적인 발표를 돕는 대형 화면과 녹화 장비를 갖추고 있습니다.</p>
+                             <a href="https://naver.me/FqZmnl4w" target="_blank" class="venue-link">지도 보기 &rarr;</a>
                         </div>
                     </div>
                 </div>
@@ -1515,10 +1479,10 @@
             <div class="footer-content">
                 <div class="footer-logo">
                     <div class="footer-logo-icon"></div>
-                    <span class="footer-logo-text">Google I/O Extended '25 Uiseong</span>
+                    <span class="footer-logo-text">DevFest 2025 in Daegu</span>
                 </div>
-                <p class="footer-organizer">주최/주관: 메이드인피플, GDG 대구</p>
-                <p class="footer-copyright">&copy; 2025 Google I/O Extended Uiseong. All rights reserved.</p>
+                <p class="footer-organizer">주최/후원: GDG Daegu / Google for Developers</p>
+                <p class="footer-copyright">&copy; DevFest 2025 in Daegu. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -1586,14 +1550,14 @@
                 new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ['발표자 모집 (CFP)', '심사 및 선정', '발표자 리허설', 'I/O Extended 행사'],
+                        labels: ['발표자 모집 (CFP)', '심사 및 선정', '발표자 리허설', 'DevFest 행사'],
                         datasets: [{
                             label: '일정',
                             data: [
                                 {x: [new Date('2025-07-14'), new Date('2025-08-02')], y: '발표자 모집 (CFP)'},
                                 {x: [new Date('2025-08-03'), new Date('2025-08-05')], y: '심사 및 선정'},
                                 {x: [new Date('2025-08-06'), new Date('2025-08-06')], y: '발표자 리허설'},
-                                {x: [new Date('2025-08-18'), new Date('2025-08-19')], y: 'I/O Extended 행사'},
+                                {x: [new Date('2025-08-18'), new Date('2025-08-19')], y: 'DevFest 2025 in Daegu 행사'},
                             ],
                             backgroundColor: [
                                 'rgba(137, 176, 174, 0.7)',
